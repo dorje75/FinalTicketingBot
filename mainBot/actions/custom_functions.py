@@ -5,6 +5,12 @@ from rapidfuzz import process
 import pytz
 from datetime import datetime, timedelta
 import uuid
+import mysql.connector
+import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 
 #rasa run -m models --enable-api --cors "*" --debug
 
@@ -140,3 +146,55 @@ def convert_to_date(date_str: str) -> str:
 def cidgen():
     return str(uuid.uuid4())
 
+def addData(new):
+    mydb = mysql.connector.connect(
+    host = "localhost",
+    user = "root",
+    password = "qwerty1234@#",
+    database = "Users"
+    )
+    cursor = mydb.cursor()
+    insert_query = "INSERT INTO users (booking_date, customer_id, customer_name, customer_email, total_tickets, indian_bookings, foreign_bookings) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+
+    cursor.execute(insert_query, new)
+
+    mydb.commit()
+    mydb.close()
+
+def sendQRViaEmail(img_path, img_name, email):
+    # Compose the email
+    img_path = "mainBot/qr_codes/1234567890.png"
+    img_name = os.path.basename(img_path)
+    msg = MIMEMultipart()
+    sender_email = "sihticketingbot@outlook.com"
+    receiver_email = "dhondupnerchung@gmail.com"
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+    msg['Subject'] = 'Your QR Code for the Ticket Booking'
+    body = 'Please find your QR code attached to this email.'
+    msg.attach(MIMEText(body, 'plain'))
+
+    # Attach the QR code image
+    with open(img_path, 'rb') as attachment:
+        part = MIMEApplication(attachment.read(), Name=os.path.basename(img_path))
+        part['Content-Disposition'] = f'attachment; filename="{img_name}"'
+        msg.attach(part)
+
+    # Convert the message to string format
+    text = msg.as_string()
+
+    # Set up the email server (Outlook SMTP)
+    server = smtplib.SMTP('smtp.office365.com', 587)
+    server.starttls()
+
+    # Log in to the server
+    server.login(sender_email, 'paneerlababdar9999@#')
+
+    # Send the email
+    server.sendmail(sender_email, receiver_email, text)
+
+    # Quit the server
+    server.quit()
+
+    # Optionally, remove the QR code file after sending the email
+    os.remove(img_path)
