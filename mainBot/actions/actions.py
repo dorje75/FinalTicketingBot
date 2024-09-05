@@ -2,6 +2,7 @@ import csv
 import re
 from typing import Any, Text, Dict, List
 
+from prompt_toolkit.shortcuts import button_dialog
 from rasa_sdk import Action, Tracker
 from rasa_sdk import FormValidationAction
 from rasa_sdk.events import SlotSet, SessionStarted, ActionExecuted, EventType
@@ -33,6 +34,8 @@ NATIONAL_EMERGENCY_NUMBER=102
 POLICE_STATION=100
 FIRE_STATION=101
 AMBULANCE=102
+
+UPI_LINK = f"https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
 
 #<<<Global Variables
 
@@ -222,8 +225,13 @@ class RedirectPaymentGateWay(Action):
         tracker: Tracker,
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
+        ticket_count = extract_and_convert_ticket(str(tracker.get_slot("ticket_count")))
+        foreigner_count = extract_and_convert_ticket(str(tracker.get_slot("foreigner_count")))
+        indian_count = ticket_count - foreigner_count
 
-        dispatcher.utter_message("Redirected to payment gateway.......")
+        total_price = (foreigner_count * NON_INDIAN_NATIONAL_PRICE) + (indian_count * INDIAN_NATIONAL_PRICE)
+
+        dispatcher.utter_message(f"You need to pay ₹{total_price} only ",UPI_LINK)
         return []
 class SelfHarmPrevention(Action):
     def name(self) -> str:
@@ -434,3 +442,5 @@ class ActionSessionStart(Action):
         events.append(ActionExecuted("action_listen"))
 
         return events
+
+
