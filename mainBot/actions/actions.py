@@ -9,12 +9,6 @@ from rasa_sdk.events import SlotSet, SessionStarted, ActionExecuted, EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
-import os  # For handling file paths
-import smtplib  # For sending email
-from email.mime.multipart import MIMEMultipart  # For composing the email
-from email.mime.text import MIMEText  # For the text content of the email
-from email.mime.application import MIMEApplication  # For attaching the QR code
-
 import datetime
 import qrcode
 
