@@ -315,7 +315,7 @@ class ClientDetailsInExcel(Action):
                 writer = csv.writer(file)
                 writer.writerow(new_row)
 
-            dispatcher.utter_message(text="Client details have been successfully stored in the Excel file.")
+            dispatcher.utter_message(text="Your booking details have been sent to your email. Enjoy your visit!")
 
         except Exception as e:
             # Log the exception and notify the user
