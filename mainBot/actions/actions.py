@@ -302,11 +302,12 @@ class ClientDetailsInExcel(Action):
             customer_id = cidgen()
 
             # Make the date SQL ready in yyyy-mm-dd format
-            date = datetime.strptime(date, "%d/%m/%Y").strftime("%Y-%m-%d")
+            f_date = datetime.strptime(date, "%d-%m-%Y").date()
+            f_date = f_date.strftime("%Y-%m-%d")
 
             # Prepare the data row
             new_row = (
-                str(date),
+                f_date,
                 str(customer_id),
                 client_name,
                 email,
