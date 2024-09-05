@@ -9,7 +9,7 @@ from rasa_sdk.events import SlotSet, SessionStarted, ActionExecuted, EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
-import datetime
+from datetime import datetime
 import qrcode
 
 from .custom_functions import extract_and_convert_ticket, convert_to_date, cidgen, addData, sendQRViaEmail
@@ -302,7 +302,7 @@ class ClientDetailsInExcel(Action):
             customer_id = cidgen()
 
             # Make the date SQL ready in yyyy-mm-dd format
-            f_date = datetime.strptime(date, "%d-%m-%Y").date()
+            f_date = datetime.strptime(date, "%d-%m-%Y")
             f_date = f_date.strftime("%Y-%m-%d")
 
             # Prepare the data row
