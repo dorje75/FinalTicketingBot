@@ -225,7 +225,7 @@ nlu:
     - [arian agarwal](client_name)
     - [Aakash](client_name)
     - [akash@gov.in](email)
-    - my name is r[dhondup](client_name)
+    - my name is [dhondup](client_name)
     - [Raftar](client_name)
     - [Chosdan](client_name)
     - [Raftar](client_name)
@@ -246,6 +246,12 @@ nlu:
   examples: |
     - text: i am not foreigner
     - text: not foreigner
+- intent: ask_museum_location
+  examples: |
+    - text: What is the address of museum?
+    - text: Location of the museum?
+    - text: What is the location of the museum?
+    - text: Where is the museum located
 - intent: self_harm
   examples: |
     - suicide
@@ -278,9 +284,34 @@ nlu:
     - fucccck
     - nigga
     - motherfucker
+    - shut up
 - regex: client_name
   examples: |
     - '[A-Za-z]{2,}(?:\s[A-Za-z]{2,})?'
 - regex: email
   examples: |
     - '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
+- intent: start_the_session
+  examples: |
+    - StAAAArT___Thhhhhe____SeSSSion_
+    - SSSAAAR11%%$$RRTT___TTTHHHHEEE___SSSEESSSIOOm
+- intent: ask_museum_timing
+  examples: |
+    - museum opening time
+    - museum closing time
+    - museum open and closing time
+    - museum opening
+    - opening
+    - closing
+    - close
+    - timing of museum
+- intent: is_filming_allowed
+  examples: |
+    - is filming allowed
+    - are cameras allowed
+    - can i bring my camera
+- intent: is_there_museum_shop
+  examples: |
+    - is there museum shop
+    - can i buy things from museum
+    

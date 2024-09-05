@@ -83,7 +83,29 @@ rules:
     - intent: provide_email
     - action: action_check_email
 
+- rule: if user ask for location show them location
+  steps:
+    - intent: ask_museum_location
+    - action: utter_show_museum_url
+- rule: for starting a new session
+  steps:
+  - intent: start_the_session
+  - action: action_session_start
+
 - rule: If someone tries to edge politely tell them not to
   steps:
   - intent: edge_test
   - action: utter_dont_edge
+- rule: museum opening time
+  steps:
+  - intent: ask_museum_timing
+  - action: utter_museum_timing
+
+- rule: question about filming
+  steps:
+  - intent: is_filming_allowed
+  - action: utter_filming_policy
+- rule: museum shop
+  steps:
+  - intent: is_there_museum_shop
+  - action: utter_museum_shop

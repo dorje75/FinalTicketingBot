@@ -17,6 +17,12 @@ intents:
 - ticket_price
 - total_ticket
 - visit_date
+- ask_museum_location
+- start_the_session
+- ask_museum_timing
+- is_filming_allowed
+- is_there_museum_shop
+
 entities:
 - date
 - email
@@ -48,6 +54,7 @@ actions:
 - action_session_start
 - validate_foreigner_count_form
 - action_set_foreigner
+- utter_show_museum_url
 responses:
   utter_greet:
   - text: 'Hello! Need tickets for the museum? I’m here to assist. Just let me know!  '
@@ -79,9 +86,8 @@ responses:
   - text: Please provide your email
   - text: What is your email address
   utter_ask_client_name:
-  - text: what is your name
-  - text: what is your good name
-  - text: What is your name
+  - text: What is your name?
+  - text: What is your good name?
   utter_take_total_confirmation_foreigner:
   - text: Do you want to confirm your booking?
     buttons:
@@ -105,12 +111,21 @@ responses:
   - text: Total foreigners, with you included?
   - text: Foreigners, counting you?
   utter_ask_user_nationality:
-  - text: Are you foreigner?
+  - text: Are there any foreign nationals?
     buttons:
     - title: Yes
       payload: /I_am_foreigner
     - title: No
       payload: /I_am_not_foreigner
+  utter_show_museum_url:
+    - text: "[Click here for Location](https://maps.app.goo.gl/csKfa2B4vFSL6kHU6)"
+  utter_museum_timing:
+    - text: The museum is open from 10 AM to 6 PM, Tuesday through Sunday.
+  utter_filming_policy:
+    - text: Photography is allowed, but filming is not permitted.
+  utter_museum_shop:
+    - text: Yes, there is a Museum Shop located on the ground floor inside the reception chamber
+
 slots:
   ticket_count:
     type: any

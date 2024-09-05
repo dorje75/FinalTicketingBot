@@ -1,4 +1,4 @@
-const action_name = "/action_session_start";  // Optional, based on your use case
+const action_name = "SSSAAAR11%%$$RRTT___TTTHHHHEEE___SSSEESSSIOOm";  // Optional, based on your use case
 const rasa_server_url = "http://localhost:5005/webhooks/rest/webhook";  // Points to your local Rasa server
 const sender_id = uuidv4();  // Generates a unique session ID for each user
 

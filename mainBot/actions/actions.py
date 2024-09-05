@@ -2,6 +2,7 @@ import csv
 import re
 from typing import Any, Text, Dict, List
 
+from humanfriendly.terminal import message
 from prompt_toolkit.shortcuts import button_dialog
 from rasa_sdk import Action, Tracker
 from rasa_sdk import FormValidationAction
@@ -11,6 +12,7 @@ from rasa_sdk.types import DomainDict
 
 from datetime import datetime
 import qrcode
+from werkzeug import run_simple
 
 from .custom_functions import extract_and_convert_ticket, convert_to_date, cidgen, add_data, sendQRViaEmail
 
@@ -30,6 +32,7 @@ FIRE_STATION=101
 AMBULANCE=102
 
 UPI_LINK = f"https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+MUSEUM_LOCATION = f"https://maps.app.goo.gl/csKfa2B4vFSL6kHU6"
 
 #<<<Global Variables
 
@@ -43,11 +46,10 @@ class TicketPrice(Action): #return default ticket price
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
         message = (
-            f"Pricing Details:\n"
-            f"Indian Nationals: ₹{INDIAN_NATIONAL_PRICE}\n"
-            f"Non-Indian Nationals: ₹{NON_INDIAN_NATIONAL_PRICE}"
+            f"Pricing Details:<br>"
+            f"Indian Nationals: ₹{INDIAN_NATIONAL_PRICE}<br>"
+            f"Foreigners: ₹{NON_INDIAN_NATIONAL_PRICE}<br>"
         )
-
         dispatcher.utter_message(message)
 
         return []
@@ -61,7 +63,11 @@ class MaxTicketLimit(Action): # tells the user maximum number of ticket that it 
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        message = f"Max tickets allowed: {MAX_TICKET_ALLOWED}."
+        message = (
+            f"Sorry, you can book a maximum of {MAX_TICKET_ALLOWED} tickets. "
+            f"If you're attending with a large group or academic institution, "
+            f"please email us to arrange your booking."
+        )
         dispatcher.utter_message(message)
         return []
 
@@ -94,9 +100,9 @@ class ValidateTicketBookingForm(FormValidationAction): # to validate the form
         # Convert and validate the extracted date
         formatted_date = convert_to_date(slot_value)
 
-        if formatted_date == "Invalid date format" or formatted_date == "Old date":
+        if formatted_date == "Invalid date format" or formatted_date == "old date":
             dispatcher.utter_message(
-                text="My apologies, I didn’t quite catch that. Could you please provide the date in the format DD/MM?"
+                text="Looks like the date is invalid. Can you give it in DD/MM/YYYY format?"
             )
             return {"date": None}
 
@@ -134,11 +140,12 @@ class ValidateTicketBookingForm(FormValidationAction): # to validate the form
 
         # Check if the email matches the regex pattern
         if re.match(pattern, slot_value):
-            dispatcher.utter_message(text=f"Ok, got your email: '{slot_value.strip().lower()}'")
+            slot_value=slot_value.strip().lower()
+            dispatcher.utter_message(text=f"Ok, got your email")
             return {"email": slot_value}
         else:
             dispatcher.utter_message(
-                text="Sorry, couldn't catch it. Can you repeat"
+                text="Sorry, could you please repeat your email?"
             )
         return {"email": None}
 
@@ -153,7 +160,7 @@ class BookingDetails(Action):
         try:
             ticket_count = extract_and_convert_ticket(str(ticket_count_slot))
         except (ValueError, TypeError) as e:
-            dispatcher.utter_message(text="Sorry, I couldn't process the ticket count. Please try again.")
+            dispatcher.utter_message(text="Sorry, I didn’t catch that. Can you provide a number?")
             return []
 
         # Extract and handle date
@@ -161,7 +168,7 @@ class BookingDetails(Action):
         try:
             date = convert_to_date(date_slot)
         except (ValueError, TypeError) as e:
-            dispatcher.utter_message(text="Sorry, I couldn't process the date. Please provide it again.")
+            dispatcher.utter_message(text="Looks like the date is invalid. Can you give it in DD/MM/YYYY format?")
             return []
 
         # Extract and handle foreigner count
@@ -172,7 +179,7 @@ class BookingDetails(Action):
             foreigner_count = extract_and_convert_ticket(str(foreigner_count_slot))
         except (ValueError, TypeError) as e:
 
-            dispatcher.utter_message(text="Sorry, I couldn't process the foreigner count. Please provide it again.")
+            dispatcher.utter_message(text="Sorry, I didn’t catch that.")
             return []
 
         # Calculate local count and total price
@@ -180,7 +187,7 @@ class BookingDetails(Action):
             local_count = int(ticket_count) - int(foreigner_count)
             total_price = (local_count * INDIAN_NATIONAL_PRICE) + (foreigner_count * NON_INDIAN_NATIONAL_PRICE)
         except (ValueError, TypeError) as e:
-            dispatcher.utter_message(text="There was an error calculating the total price. Please ensure all values are correct.")
+            dispatcher.utter_message(text="There was an error!")
             return []
         try:
             client_name_slot=tracker.get_slot("client_name")
@@ -225,7 +232,7 @@ class RedirectPaymentGateWay(Action):
 
         total_price = (foreigner_count * NON_INDIAN_NATIONAL_PRICE) + (indian_count * INDIAN_NATIONAL_PRICE)
 
-        dispatcher.utter_message(f"You need to pay ₹{total_price} only ",UPI_LINK)
+        dispatcher.utter_message(f"Please scan the QR code to complete the payment. The total price is ₹{total_price}.",UPI_LINK)
         return []
 class SelfHarmPrevention(Action):
     def name(self) -> str:
@@ -237,9 +244,9 @@ class SelfHarmPrevention(Action):
         domain: "DomainDict",
     ) -> List[Dict[Text, Any]]:
 
-        text=("I'm sorry you're feeling this way."
-              "Please reach out to someone who can help, like a mental health professional or a trusted person."
-              "If you're in danger, contact emergency services."
+        text=("I'm sorry you're feeling this way.<br>"
+              "Please reach out to someone who can help, like a mental health professional or a trusted person.<br>"
+              "If you're in danger, contact emergency services.<br>"
               f"National Emergency Number: {NATIONAL_EMERGENCY_NUMBER}<br>"
               f"Police Station: {POLICE_STATION}<br>"
               f"Ambulance: {AMBULANCE}<br>"
@@ -272,9 +279,9 @@ class ActionCheckEmail(Action): #it will chekck if we got the email or not
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict) -> list:
         email = tracker.get_slot('email')
         if email:
-            dispatcher.utter_message(text=f"Got your email address: {email}")
+            dispatcher.utter_message(text="I've got your email address")
         else:
-            dispatcher.utter_message(text="I didn't get your email address. Can you type again")
+            dispatcher.utter_message(text="Could you please repeat your email again?")
         return []
 
 
@@ -326,11 +333,11 @@ class ClientDetailsInExcel(Action):
             # send email with the generated qr code
             sendQRViaEmail(img_path, img_name, email)
 
-            dispatcher.utter_message(text="Client details have been successfully stored in the Database file.")
+            dispatcher.utter_message(text=f"The tickets have been sent to your email:  {email}")
 
         except Exception as e:
             # Log the exception and notify the user
-            dispatcher.utter_message(text="An error occurred while saving the details. Please try again.")
+            dispatcher.utter_message(text="Sorry, I couldn't send the email.")
             # Log the error message (you may want to log this to a file or monitoring service)
             print(f"Error occurred: {e}")
 
@@ -359,10 +366,10 @@ class ValidateForeignerCountForm(FormValidationAction): # to validate the form
 
         numeric_slot_value = extract_and_convert_ticket(str(slot_value))
         if numeric_slot_value> ticket_count or numeric_slot_value > MAX_TICKET_ALLOWED or numeric_slot_value < MIN_TICKET_ALLOWED:
-            dispatcher.utter_message(text="Number of foreigners, including you?")
+            dispatcher.utter_message(text="Great! How many foreign nationals are there?")
             return {"number": None}
 
-        dispatcher.utter_message(text=f"Thanks for the foreigner count of {numeric_slot_value}! I'll take it from here..")
+        dispatcher.utter_message(text=f"I'll take it from here..")
         return {"foreigner_count": numeric_slot_value, "number": numeric_slot_value}
 
 class SetNumberToNone(Action):
@@ -426,7 +433,7 @@ class ActionSessionStart(Action):
 
         # Bot introduces itself and offers options
         dispatcher.utter_message(
-            text="Hello! I'm your ticket assistant. How can I help you today?",
+            text="Hello! I'm Darshan. How can I help you today?",
             buttons=[
                 {"title": "Buy Ticket", "payload": "/book_ticket"},
                 {"title": "Ticket Price", "payload": "/ticket_price"},
@@ -434,8 +441,10 @@ class ActionSessionStart(Action):
         )
 
         # Add `action_listen` at the end as a user message follows
-        events.append(ActionExecuted("action_listen"))
+        # events.append(ActionExecuted("action_listen"))
 
         return events
+
+
 
 
