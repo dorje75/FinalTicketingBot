@@ -12,7 +12,7 @@ from rasa_sdk.types import DomainDict
 from datetime import datetime
 import qrcode
 
-from .custom_functions import extract_and_convert_ticket, convert_to_date, cidgen, addData, sendQRViaEmail
+from .custom_functions import extract_and_convert_ticket, convert_to_date, cidgen, add_data, sendQRViaEmail
 
 # from sqlalchemy.testing.util#Divyansh what is this do we need this
 
@@ -302,7 +302,7 @@ class ClientDetailsInExcel(Action):
             customer_id = cidgen()
 
             # Make the date SQL ready in yyyy-mm-dd format
-            f_date = datetime.strptime(date, "%d-%m-%Y")
+            f_date = datetime.strptime(date, "%d/%m/%Y")
             f_date = f_date.strftime("%Y-%m-%d")
 
             # Prepare the data row
@@ -310,17 +310,17 @@ class ClientDetailsInExcel(Action):
                 f_date,
                 str(customer_id),
                 client_name,
-                email,
-                ticket_count,
-                str(indian_count),
-                str(foreigner_count)
+                int(ticket_count),
+                int(indian_count),
+                int(foreigner_count),
+                email
             )
 
             # write the new row
-            addData(new_row)
-            img = qrcode.make("customer_id")
+            add_data(new_row)
+            img = qrcode.make(customer_id)
             img_name = f"{customer_id}.png"
-            img_path = "mainBot/qr_codes/" + img_name
+            img_path = "qr_codes/" + img_name
             img.save(img_path)
 
             # send email with the generated qr code

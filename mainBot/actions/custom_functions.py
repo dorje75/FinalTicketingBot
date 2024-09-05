@@ -146,7 +146,7 @@ def convert_to_date(date_str: str) -> str:
 def cidgen():
     return str(uuid.uuid4())
 
-def addData(new):
+def add_data(new):
     mydb = mysql.connector.connect(
     host = "localhost",
     user = "root",
@@ -154,7 +154,7 @@ def addData(new):
     database = "Users"
     )
     cursor = mydb.cursor()
-    insert_query = "INSERT INTO users (booking_date, customer_id, customer_name, customer_email, total_tickets, indian_bookings, foreign_bookings) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    insert_query = "INSERT INTO users (booking_date, customer_id, customer_name, total_tickets, indian_bookings, foreign_bookings,customer_email) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
     cursor.execute(insert_query, new)
 
@@ -163,11 +163,9 @@ def addData(new):
 
 def sendQRViaEmail(img_path, img_name, email):
     # Compose the email
-    img_path = "mainBot/qr_codes/1234567890.png"
-    img_name = os.path.basename(img_path)
     msg = MIMEMultipart()
     sender_email = "sihticketingbot@outlook.com"
-    receiver_email = "dhondupnerchung@gmail.com"
+    receiver_email = email
     msg['From'] = sender_email
     msg['To'] = receiver_email
     msg['Subject'] = 'Your QR Code for the Ticket Booking'
