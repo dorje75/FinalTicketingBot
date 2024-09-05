@@ -9,7 +9,10 @@ from rasa_sdk.events import SlotSet, SessionStarted, ActionExecuted, EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 
-from .custom_functions import extract_and_convert_ticket, convert_to_date, cidgen
+import datetime
+import qrcode
+
+from .custom_functions import extract_and_convert_ticket, convert_to_date, cidgen, addData, sendQRViaEmail
 
 # from sqlalchemy.testing.util#Divyansh what is this do we need this
 
@@ -298,24 +301,31 @@ class ClientDetailsInExcel(Action):
             # Generate a customer ID
             customer_id = cidgen()
 
+            # Make the date SQL ready in yyyy-mm-dd format
+            date = datetime.strptime(date, "%d/%m/%Y").strftime("%Y-%m-%d")
+
             # Prepare the data row
-            new_row = [
+            new_row = (
+                str(date),
                 str(customer_id),
                 client_name,
                 email,
                 ticket_count,
-                str(date),
                 str(indian_count),
-                str(foreigner_count),
-                True
-            ]
+                str(foreigner_count)
+            )
 
-            # Open the file and write the new row
-            with open('data/userDetails.csv', 'a', newline='') as file:
-                writer = csv.writer(file)
-                writer.writerow(new_row)
+            # write the new row
+            addData(new_row)
+            img = qrcode.make("customer_id")
+            img_name = f"{customer_id}.png"
+            img_path = "mainBot/qr_codes/" + img_name
+            img.save(img_path)
 
-            dispatcher.utter_message(text="Your booking details have been sent to your email. Enjoy your visit!")
+            # send email with the generated qr code
+            sendQRViaEmail(img_path, img_name, email)
+
+            dispatcher.utter_message(text="Client details have been successfully stored in the Database file.")
 
         except Exception as e:
             # Log the exception and notify the user
