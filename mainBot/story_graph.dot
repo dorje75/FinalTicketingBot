@@ -1,0 +1,38 @@
+digraph  {
+0 [class="start active", fillcolor=green, fontsize=12, label=START, style=filled];
+"-1" [class=end, fillcolor=red, fontsize=12, label=END, style=filled];
+1 [class=active, fontsize=12, label=action_session_start];
+2 [class=active, fontsize=12, label=ticket_booking_form];
+5 [class=active, fontsize=12, label=utter_ask_user_nationality];
+6 [class=active, fontsize=12, label=action_set_number_to_zero];
+7 [class=active, fontsize=12, label=utter_ask_foreigner_count];
+8 [class=active, fontsize=12, label=foreigner_count_form];
+10 [class=active, fontsize=12, label=utter_take_total_confirmation_foreigner];
+11 [class=active, fontsize=12, label=action_booking_details];
+12 [class="dashed active", fontsize=12, label=action_default_fallback];
+13 [class="intent active", fillcolor=lightblue, label="/total_ticket", shape=rect, style=filled];
+14 [class="intent active", fillcolor=lightblue, label="/provide_name", shape=rect, style=filled];
+15 [class="intent active", fillcolor=lightblue, label="/provide_email", shape=rect, style=filled];
+16 [class="intent active", fillcolor=lightblue, label="/I_am_foreigner", shape=rect, style=filled];
+17 [class="intent active", fillcolor=lightblue, label="/provide_foreigner_count", shape=rect, style=filled];
+18 [class="intent active", fillcolor=lightblue, label="/confirm_book", shape=rect, style=filled];
+0 -> "-1"  [class="", key=NONE, label=""];
+0 -> 1  [class=active, key=NONE, label=""];
+1 -> 13  [class=active, key=0];
+2 -> 5  [class=active, key=NONE, label=""];
+2 -> 14  [class=active, key=0];
+2 -> 15  [class=active, key=0];
+5 -> 16  [class=active, key=0];
+6 -> 7  [class=active, key=NONE, label=""];
+7 -> 8  [class=active, key=NONE, label=""];
+8 -> 10  [class=active, key=NONE, label=""];
+8 -> 17  [class=active, key=0];
+10 -> 18  [class=active, key=0];
+11 -> 12  [class=active, key=NONE, label=""];
+13 -> 2  [class=active, key=0];
+14 -> 2  [class=active, key=0];
+15 -> 2  [class=active, key=0];
+16 -> 6  [class=active, key=0];
+17 -> 8  [class=active, key=0];
+18 -> 11  [class=active, key=0];
+}

@@ -1,0 +1,89 @@
+version: "3.1"
+
+rules:
+- rule: Activate Form # to activate the form for ticket booking
+  steps:
+  - intent: total_ticket
+  - action: ticket_booking_form
+  - active_loop: ticket_booking_form
+
+- rule: Submit Form # to deactivate the form for ticket booking
+  condition:
+  - active_loop: ticket_booking_form
+  steps:
+  - action: ticket_booking_form
+  - active_loop: null
+  - slot_was_set:
+      - requested_slot: null
+  - action: utter_ask_user_nationality
+
+- rule: Activate Foreigner Form # to activate the form for foreigner count
+  steps:
+  - intent: I_am_foreigner
+  - action: action_set_number_to_zero
+  - action: foreigner_count_form
+  - active_loop: foreigner_count_form
+#
+- rule: Submit Foreigner Form # to deactivate the form for foreigner count
+  condition:
+  - active_loop: foreigner_count_form
+  steps:
+  - action: foreigner_count_form
+  - active_loop: null
+  - slot_was_set:
+      - requested_slot: null
+  - action: utter_take_total_confirmation_foreigner
+
+- rule: if user is not foreigner # action to perform if user is not foreigner
+  steps:
+    - action: utter_ask_user_nationality
+    - intent: I_am_not_foreigner
+    - action: action_set_foreigner
+    - action: utter_take_total_confirmation_indian
+
+- rule: ask for changes to make if booking is denied
+  steps:
+  - intent: deny_book
+  - action: utter_ask_for_change
+
+- rule: action to take after user confirms
+  steps:
+  - intent: confirm_book
+  - action: action_booking_details
+  - action: action_redirect_to_payment
+  - action: action_store_slot_value_in_excel
+
+- rule: book ticket form
+  steps:
+    - intent: book_ticket
+    - action: utter_ask_ticket_count
+
+- rule: Introduce your self #to introduce herself
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+    - intent: goodbye
+    - action: utter_goodbye
+
+- rule: If someone is expressing self harm
+  steps:
+  - intent: self_harm
+  - action: action_contact_self_help
+
+- rule: If someone notifies emergency
+  steps:
+  - intent: emergency
+  - action: action_show_emergency_contacts
+
+- rule: Collect email address
+  steps:
+    - intent: provide_email
+    - action: action_check_email
+
+- rule: If someone tries to edge politely tell them not to
+  steps:
+  - intent: edge_test
+  - action: utter_dont_edge

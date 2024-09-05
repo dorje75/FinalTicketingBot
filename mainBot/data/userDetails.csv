@@ -1,0 +1,6 @@
+"customer_id	customer_name	customer_email	total_tickets	booking_date	indian_count	foriegner_count	txn_status"
+56dc6606-588f-4b8a-b79a-9883b427c7d8,dhondup,dd@gmail.como,2,old date,True
+6c1c9219-9a21-45dc-9b4f-2557e4c4ac7c,Aakash,akash@gov.in,2,04/09/2024,True
+f6a6960c-f686-4c81-9281-b04a881a0004,dhondup,dho@gmail.com,10,old date,True
+2196c17b-3593-408e-b2e3-281b4d7361c5,dhondup,dorje@gmail.com,2,06/09/2024,2,0,True
+8bd9cf8c-25a0-4a2e-ae8b-b72891045070,dhondup,dd@gmail.com,15,06/09/2024,15,0,True

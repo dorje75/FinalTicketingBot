@@ -1,0 +1,157 @@
+version: '3.1'
+intents:
+- I_am_foreigner
+- I_am_not_foreigner
+- book_ticket
+- confirm_book
+- deny_book
+- edge_test
+- emergency
+- goodbye
+- greet
+- provide_email
+- provide_foreigner_count
+- provide_name
+- self_harm
+- thankyou
+- ticket_price
+- total_ticket
+- visit_date
+entities:
+- date
+- email
+- number
+- client_name
+- foreigner_count
+- ticket_count
+actions:
+- utter_take_total_confirmation_foreigner
+- action_set_number_to_zero
+- action_booking_details
+- utter_ask_foreigner_count
+- utter_ask_user_nationality
+- action_redirect_to_payment
+- action_store_slot_value_in_excel
+- utter_take_total_confirmation_indian
+- utter_ask_ticket_count
+- utter_greet
+- action_max_ticket_allowed
+- action_return_price
+- validate_ticket_booking_form
+- utter_thankyou
+- utter_goodbye
+- action_validate_number
+- action_contact_self_help
+- action_show_emergency_contacts
+- action_check_email
+- action_set_foreigner_count
+- action_session_start
+- validate_foreigner_count_form
+- action_set_foreigner
+responses:
+  utter_greet:
+  - text: 'Hello! Need tickets for the museum? I’m here to assist. Just let me know!  '
+  - text: Hi! Ready to book your museum tickets? I can help with that. What do you need?
+  - text: Hi there! I’m here to help you book tickets for our museum. Ready to get started
+  utter_goodbye:
+  - text: Bye
+  - text: Have a nice day
+  - text: Please visit again
+  - text: Take care, goodbye
+  - text: See you next time
+  - text: Please make sure to visit us again
+  utter_thankyou:
+  - text: Thank you
+  - text: Thanks
+  utter_ask_ticket_count:
+  - text: How many tickets would you like
+  - text: How many tickets do you need?
+  - text: How many tickets are you looking to book?
+  - text: How many tickets would you like to book?
+  utter_ask_date:
+  - text: Please provide the date of your visit
+  - text: Visit date?
+  - text: When is your visit?
+  - text: Date of visit?
+  - text: Which date?
+  - text: Preferred date?
+  utter_ask_email:
+  - text: Please provide your email
+  - text: What is your email address
+  utter_ask_client_name:
+  - text: what is your name
+  - text: what is your good name
+  - text: What is your name
+  utter_take_total_confirmation_foreigner:
+  - text: Do you want to confirm your booking?
+    buttons:
+    - title: Yes
+      payload: /confirm_book
+    - title: No
+      payload: /deny_book
+  utter_take_total_confirmation_indian:
+  - text: Do you want to confirm your booking?
+    buttons:
+    - title: Yes
+      payload: /confirm_book
+    - title: No
+      payload: /deny_book
+  utter_ask_for_change:
+  - text: What changes would you like to make ?
+  utter_dont_edge:
+  - text: Let's keep the conversation respectful. I'm here to help you, please ask your question.
+  utter_ask_foreigner_count:
+  - text: Number of foreigners, including you?
+  - text: Total foreigners, with you included?
+  - text: Foreigners, counting you?
+  utter_ask_user_nationality:
+  - text: Are you foreigner?
+    buttons:
+    - title: Yes
+      payload: /I_am_foreigner
+    - title: No
+      payload: /I_am_not_foreigner
+slots:
+  ticket_count:
+    type: any
+    mappings:
+    - type: custom
+    influence_conversation: false
+  number:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: number
+  date:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: date
+  foreigner_count:
+    type: text
+    mappings:
+    - type: custom
+    influence_conversation: false
+  email:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: email
+  client_name:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: client_name
+forms:
+  ticket_booking_form:
+    required_slots:
+    - number
+    - date
+    - client_name
+    - email
+  foreigner_count_form:
+    required_slots:
+    - number
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

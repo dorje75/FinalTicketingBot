@@ -1,0 +1,286 @@
+version: "3.1"
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - good afternoon
+    - julley
+    - namastay
+    - greetings
+    - whatsup
+- intent: goodbye
+  examples: |
+    - Goodbye
+    - Bye
+    - Good bye
+    - See you later
+    - See you around
+    - Bye bye
+    - Catch you later
+- intent: thankyou
+  examples: |
+    - Thanks
+    - Thank you
+    - Thanks a lot
+    - Thanks so much
+    - I appreciate it
+- intent: book_ticket
+  examples: |
+    - I want to book a ticket
+    - I need a ticket for museum
+    - Can you help me book a ticket?
+    - I want to book a ticket for the museum
+    - I need to reserve a ticket
+    - Help me book a ticket
+    - I’d like to book a movie ticket
+    - I want to buy a ticket for a movie
+    - Book a ticket for me
+    - I need a ticket for the museum
+    - Can I book a museum ticket here?
+    - How do I book a ticket?
+    - I need a ticket booking
+    - Want Ticket
+    - Need some ticket
+    - Tickets
+    - bai i need tickets
+    - are tickets available
+    - Me and my family need some ticket
+    - buy ticket
+    - how ticket
+    - some ticket
+    - tickets for
+    - buy tickets
+    - i wanna book tickets
+    - i want to book tickets
+- intent: ticket_price
+  examples: |
+    - what is the ticket price?
+    - price ticket
+    - ticket price
+    - how much does the ticket cost?
+    - tell me the price of the tickets
+    - what are the ticket charges?
+    - can you tell me the ticket price?
+    - what is the price of 1 ticket
+    - ticket price?
+- intent: total_ticket
+  examples: |
+    - book me [2](number)
+    - [8](number)
+    - [eight](number)
+    - i want [1](number)
+    - want [4](number)
+    - need [seven](number)
+    - [one](number)
+    - [25](number) tickets
+    - book [eight](number)
+    - given [ten](number)
+    - provide [10](number) tickets
+    - i want [18](number) tickets
+    - can i get [four](number) ticket
+    - please book [4](number)
+    - i want [10](number) tickets
+    - i want [10](number) tickets for [10](date)
+    - book me [2](number) tickets
+    - i want [10](number) tickets for [tomorrow](date)
+    - want [eleven](number) tickets for [tomorrow](date)
+    - [six](number) for [11 aug](date)
+    - [one](number) for [17]
+    - [today](date) [two](number)
+    - [next monday](date) [five](number)
+    - [next thursday](date) [8](number) tickets
+    - i need [6](number)
+    - [29 february](date)
+    - [three](number) tickets
+    - [tomorrow](date)
+    - i want [four](number) tickets
+    - tickets [2](number)
+    - [2](number) tickets for [today](date)
+    - book [4](number) tickets
+    - [next thurs](date)
+    - [10](number) tickets [today](date)
+    - [12](number) ticket for [tomorrow](date)
+    - i want [2](number) tickets
+    - i need [10](number) tickets
+    - [12](number)
+    - i want [12](number) ticket for [tomorrow](date)
+    - i want to book [2](number) tickets for [tomorrow](date)
+- intent: visit_date
+  examples: |
+    - [today](date)
+    - [next day](date)
+    - [14 august](date)
+    - [11 october](date)
+    - [three days](date) from now
+    - [12 aug](date)
+    - [16 jan](date)
+    - [oct 20](date)
+    - [december 1st](date)
+    - [12 april](date)
+    - [25/10](date)
+    - [23/12/2024](date)
+    - [eleventh of august](date)
+    - [16th may](date)
+    - [14th october](date)
+    - [16/may](date)
+    - [next friday](date)
+    - [next monday](date)
+    - [coming tuesday](date)
+    - [28 august](date)
+    - [29th august](date)
+    - [29th](date)
+    - [next week](date)
+    - [next week today](date)
+    - [next week tomorrow](date)
+    - [next week day after tomorrow](date)
+    - [next mon](date)
+    - [20-10-2024]
+    - [30th august 2024](date)
+    - [october thirty]
+    - [next fri](date)
+    - [next satur](date)
+    - [next sat](date)
+    - [coming day](date)
+    - [14 nov](date)
+    - [14th nov](date)
+    - [nov 12](date)
+    - [12th nov](date)
+    - change date to [next fri](date)
+    - no change date to [30th august](date)
+    - [tomorrow](date) [2](number) tickets
+    - [05/09/2024](date)
+    - [20/10/2024](date)
+- intent: confirm_book
+  examples: |
+    - gotopyamentgateway??????tomakepayment_autoMates
+- intent: deny_book
+  examples: |
+    - donotgotothepyamentgateway??????askandaksforchanges_non
+- intent: provide_email
+  examples: |
+    - [stanzin@yahoo.co.in[(email)
+    - [dhondup@gmail.com](email)
+    - my email is [divyansh@outlook.com](email)
+    - [divesh@hotmail.com](email)
+    - [soni@gmail.com](email)
+    - [satvik@gmail.com](email)
+    - [sneha@dtu.ac.in](email)
+    - [aryan45@gmail.com](email)
+    - [dd@gmail.com](email)
+    - my email is [divyansh@yahoo.in](email)
+    - emai is [david@yahoo.com](email)
+    - [rafter@outlook.com](email)
+    - [chosdan@yahoo.in](email)
+    - [raftar@outlook.com](email)
+- intent: provide_name
+  examples: |
+    - [dhondup](client_name)
+    - [stanzin](client_name)
+    - [divyansh](client_name)
+    - [devesh](client_name)
+    - [Devansh Soni](client_name)
+    - [satvik](client_name)
+    - [sneha](client_name)
+    - [arjun kumar](client_name)
+    - [lakshmi deva](client_name)
+    - [priya rathi](client_name)
+    - [raman chaudry](client_name)
+    - [aishwarya](client_name)
+    - [tashi](client_name)
+    - [jigme](client_name)
+    - [choden](client_name)
+    - [rosy](client_name)
+    - [rajesh sing](client_name)
+    - [renuka](client_name)
+    - [marie](client_name)
+    - [john](client_name)
+    - [michael](client_name)
+    - [emily](client_name)
+    - [james](client_name)
+    - [olivia](client_name)
+    - [david](client_name)
+    - [amelia](client_name)
+    - [oliver](client_name)
+    - [daniel](client_name)
+    - [muhammad](client_name)
+    - [amina](client_name)
+    - [kwame](client_name)
+    - [fatima](client_name)
+    - [babajide](client_name)
+    - [ayomide](client_name)
+    - [ana](client_name)
+    - [santiago](client_name)
+    - [lucas](client_name)
+    - [elena](client_name)
+    - [maria](client_name)
+    - [arian agarwal](client_name)
+    - [Aakash](client_name)
+    - [akash@gov.in](email)
+    - my name is r[dhondup](client_name)
+    - [Raftar](client_name)
+    - [Chosdan](client_name)
+    - [Raftar](client_name)
+- intent: I_am_foreigner
+  examples: |
+    - text: we are foreigners
+    - text: i am foreigner
+    - text: foreigner
+- intent: provide_foreigner_count
+  examples: |
+    - [12](number) foreigners
+    - [two](number) people
+    - [fourteen](number) forei
+    - [2](number) outsiders
+    - Foreigners: fifteen(number)
+    - [1](number) foreigner
+- intent: I_am_not_foreigner
+  examples: |
+    - text: i am not foreigner
+    - text: not foreigner
+- intent: self_harm
+  examples: |
+    - suicide
+    - i want to die
+    - self harm
+    - killing
+    - i want to kill myself
+    - i hate me
+    - dont want to live
+- intent: emergency
+  examples: |
+    - emergency
+    - police
+    - death
+- intent: edge_test
+  examples: |
+    - fuck
+    - fuk
+    - suck
+    - dick
+    - dik
+    - vagina
+    - vagene
+    - cunt
+    - suck my dick
+    - pussy
+    - bahanchod
+    - bkl
+    - chod
+    - fucccck
+    - nigga
+    - motherfucker
+- regex: client_name
+  examples: |
+    - '[A-Za-z]{2,}(?:\s[A-Za-z]{2,})?'
+- regex: email
+  examples: |
+    - '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}'
