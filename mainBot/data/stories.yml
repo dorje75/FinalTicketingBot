@@ -11,15 +11,19 @@ stories:
     - active_loop: ticket_booking_form
     - slot_was_set:
         - requested_slot: number
+    - slot_was_set:
         - number: 12
     - slot_was_set:
         - requested_slot: date
+    - slot_was_set:
         - date: 12 aug
     - slot_was_set:
         - requested_slot: client_name
+    - slot_was_set:
         - client_name: manmit sing
     - slot_was_set:
         - requested_slot: email
+    - slot_was_set:
         - email: manmitsing3@gmail.com
     - active_loop: null
     - slot_was_set:
@@ -42,18 +46,104 @@ stories:
     - active_loop: ticket_booking_form
     - slot_was_set:
         - requested_slot: number
+    - slot_was_set:
         - number: 12
     - slot_was_set:
         - requested_slot: date
-        - date: 12 aug
+    - slot_was_set:
+        - date: tomorrow
     - slot_was_set:
         - requested_slot: foreigner_count
+    - slot_was_set:
         - foreigner_count: 15
     - slot_was_set:
         - requested_slot: client_name
+    - slot_was_set:
         - client_name: manmit sing
     - slot_was_set:
         - requested_slot: email
+    - slot_was_set:
+        - email: manmitsing3@gmail.com
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: utter_ask_user_nationality
+    - intent: I_am_foreigner
+    - action: action_set_number_to_zero
+    - action: foreigner_count_form
+    - active_loop: foreigner_count_form
+    - slot_was_set:
+        - requested_slot: number
+    - slot_was_set:
+        - number: 12
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: utter_take_total_confirmation_foreigner
+    - intent: confirm_book
+    - action: action_booking_details
+    - action: action_redirect_to_payment
+    - action: action_store_slot_value_in_excel
+
+- story: non Ideal Story With Indian Customer
+  steps:
+    - intent: book_ticket
+    - action: utter_ask_ticket_count
+    - intent: total_ticket
+    - action: ticket_booking_form
+    - active_loop: ticket_booking_form
+    - slot_was_set:
+        - requested_slot: number
+    - slot_was_set:
+        - number: 12
+    - slot_was_set:
+        - requested_slot: date
+    - slot_was_set:
+        - date: 12 aug
+    - slot_was_set:
+        - requested_slot: client_name
+    - slot_was_set:
+        - client_name: manmit sing
+    - slot_was_set:
+        - requested_slot: email
+    - slot_was_set:
+        - email: manmitsing3@gmail.com
+    - active_loop: null
+    - slot_was_set:
+        - requested_slot: null
+    - action: utter_ask_user_nationality
+    - intent: I_am_not_foreigner
+    - action: action_set_foreigner
+    - action: utter_take_total_confirmation_indian
+    - intent: deny_book
+    - action: utter_ask_for_change
+
+- story: Ideal Story With Non Indian Customer
+  steps:
+    - intent: book_ticket
+    - action: utter_ask_ticket_count
+    - intent: total_ticket
+    - action: ticket_booking_form
+    - active_loop: ticket_booking_form
+    - slot_was_set:
+        - requested_slot: number
+    - slot_was_set:
+        - number: 12
+    - slot_was_set:
+        - requested_slot: date
+    - slot_was_set:
+        - date: 12 aug
+    - slot_was_set:
+        - requested_slot: foreigner_count
+    - slot_was_set:
+        - foreigner_count: 15
+    - slot_was_set:
+        - requested_slot: client_name
+    - slot_was_set:
+        - client_name: manmit sing
+    - slot_was_set:
+        - requested_slot: email
+    - slot_was_set:
         - email: manmitsing3@gmail.com
     - active_loop: null
     - slot_was_set:
@@ -70,194 +160,43 @@ stories:
     - slot_was_set:
         - requested_slot: null
     - action: utter_take_total_confirmation_foreigner
-    - intent: confirm_book
-    - action: action_booking_details
-    - action: action_redirect_to_payment
-    - action: action_store_slot_value_in_excel
+    - intent: deny_book
+    - action: utter_ask_for_change
 
-#- story: second ideal  story indian customer different path
-#  steps:
-#  - intent: ticket_price
-#  - action: action_return_price
-#  - action: utter_ask_ticket_count
-#  - intent: total_ticket
-#  - action: ticket_booking_form
-#  - active_loop: ticket_booking_form
-#  - slot_was_set:
-#      - requested_slot: number
-#  - slot_was_set:
-#      - number: 12
-#  - slot_was_set:
-#      - requested_slot: date
-#  - slot_was_set:
-#      - date: 12 aug
-#  - slot_was_set:
-#      - requested_slot: foreigner_count
-#  - slot_was_set:
-#      - foreigner_count: 15
-#  - slot_was_set:
-#      - requested_slot: client_name
-#  - slot_was_set:
-#      - client_name: manmit sing
-#  - slot_was_set:
-#      - requested_slot: email
-#  - slot_was_set:
-#      - client_name: manmitsing3@gmail.com
-#  - active_loop: null
-#  - slot_was_set:
-#      - requested_slot: null
-#  - action: utter_ask_user_nationality
-#  - intent: I_am_not_foreigner
-#  - action: action_booking_details
-#  - action: utter_take_total_confirmation
-#  - intent: confirm_book
-#  - action: action_redirect_to_payment
-#  - action: action_store_slot_value_in_excel
+- story: second ideal  story indian customer different path
+  steps:
+  - intent: book_ticket
+  - action: utter_ask_ticket_count
+  - intent: total_ticket
+  - action: ticket_booking_form
+  - active_loop: ticket_booking_form
+  - slot_was_set:
+      - requested_slot: number
+  - slot_was_set:
+      - number: 12
+  - slot_was_set:
+      - requested_slot: date
+  - slot_was_set:
+      - date: tomorrow
+  - slot_was_set:
+      - requested_slot: foreigner_count
+  - slot_was_set:
+      - foreigner_count: 15
+  - slot_was_set:
+      - requested_slot: client_name
+  - slot_was_set:
+      - client_name: soni
+  - slot_was_set:
+      - requested_slot: email
+  - slot_was_set:
+      - client_name: soni@gmail.com
+  - active_loop: null
+  - slot_was_set:
+      - requested_slot: null
+  - action: utter_ask_user_nationality
+  - intent: I_am_not_foreigner
+  - action: action_set_foreigner
+  - action: utter_take_total_confirmation_indian
+  - intent: deny_book
+  - action: utter_ask_for_change
 
-
-
-
-#- story: interactive_story_1
-#  steps:
-#  - intent: book_ticket
-#  - action: utter_ask_ticket_count
-#  - intent: total_ticket
-#    entities:
-#    - number: '12'
-#  - slot_was_set:
-#    - number: '12'
-#  - action: ticket_booking_form
-#  - active_loop: ticket_booking_form
-#  - slot_was_set:
-#    - number: 12
-#  - slot_was_set:
-#    - ticket_count: 12
-#  - slot_was_set:
-#    - requested_slot: date
-#  - intent: total_ticket
-#    entities:
-#    - date: tomorrow
-#  - slot_was_set:
-#    - date: tomorrow
-#  - action: ticket_booking_form
-#  - slot_was_set:
-#    - date: 06/09/2024
-#  - slot_was_set:
-#    - requested_slot: client_name
-#  - intent: provide_name
-#    entities:
-#    - client_name: Raftar
-#  - slot_was_set:
-#    - client_name: Raftar
-#  - action: ticket_booking_form
-#  - slot_was_set:
-#    - client_name: Raftar
-#  - slot_was_set:
-#    - requested_slot: email
-#  - intent: provide_email
-#    entities:
-#    - email: rafter@outlook.com
-#  - slot_was_set:
-#    - email: rafter@outlook.com
-#  - action: ticket_booking_form
-#  - slot_was_set:
-#    - email: rafter@outlook.com
-#  - slot_was_set:
-#    - requested_slot: null
-#  - active_loop: null
-#  - action: utter_ask_user_nationality
-#  - intent: I_am_foreigner
-#  - action: action_set_number_to_zero
-#  - action: utter_ask_foreigner_count
-#  - action: foreigner_count_form
-#  - active_loop: foreigner_count_form
-#  - slot_was_set:
-#      - requested_slot: number
-#  - slot_was_set:
-#    - number: 12
-#  - slot_was_set:
-#    - foreigner_count: 12
-#  - slot_was_set:
-#    - requested_slot: null
-#  - active_loop: null
-#  - action: action_booking_details
-#  - action: utter_take_total_confirmation
-#  - intent: confirm_book
-#  - action: action_redirect_to_payment
-#  - action: action_store_slot_value_in_excel
-#
-#
-#- story: interactive_story_1
-#  steps:
-#  - intent: total_ticket
-#    entities:
-#    - number: '2'
-#    - date: tomorrow
-#  - slot_was_set:
-#    - number: '2'
-#  - slot_was_set:
-#    - date: tomorrow
-#  - action: ticket_booking_form
-#  - active_loop: ticket_booking_form
-#  - slot_was_set:
-#    - number: 2
-#  - slot_was_set:
-#    - date: 06/09/2024
-#  - slot_was_set:
-#    - ticket_count: 2
-#  - slot_was_set:
-#    - requested_slot: client_name
-#  - intent: provide_name
-#    entities:
-#    - client_name: Raftar
-#  - slot_was_set:
-#    - client_name: Raftar
-#  - action: ticket_booking_form
-#  - slot_was_set:
-#    - client_name: Raftar
-#  - slot_was_set:
-#    - requested_slot: email
-#  - intent: provide_email
-#    entities:
-#    - email: raftar@outlook.com
-#  - slot_was_set:
-#    - email: raftar@outlook.com
-#  - action: ticket_booking_form
-#  - slot_was_set:
-#    - email: raftar@outlook.com
-#  - slot_was_set:
-#    - requested_slot: null
-#  - active_loop: null
-#  - action: utter_ask_user_nationality
-#  - intent: I_am_foreigner
-#  - action: action_set_number_to_zero
-#  - slot_was_set:
-#    - number: null
-#  - action: utter_ask_foreigner_count
-#  - action: foreigner_count_form
-#  - active_loop: foreigner_count_form
-#  - slot_was_set:
-#    - number: null
-#  - slot_was_set:
-#    - requested_slot: number
-#  - intent: total_ticket
-#    entities:
-#    - number: '12'
-#  - slot_was_set:
-#    - number: '12'
-#  - intent: provide_foreigner_count
-#    entities:
-#    - number: '1'
-#  - slot_was_set:
-#    - number: '1'
-#  - action: foreigner_count_form
-#  - slot_was_set:
-#    - number: 1
-#  - slot_was_set:
-#    - foreigner_count: 1
-#  - slot_was_set:
-#    - requested_slot: null
-#  - active_loop: null
-#  - action: utter_take_total_confirmation_foreigner
-#  - intent: confirm_book
-#  - action: action_booking_details

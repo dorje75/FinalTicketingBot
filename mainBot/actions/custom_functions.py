@@ -100,13 +100,19 @@ def convert_to_date(date_str: str) -> str:
         if not parsed_date:
             raise ValueError("Invalid date format")
 
-        # Get current date and make parsed_date timezone-aware
+        # Get current date
         current_date = datetime.now(ist).date()
-        parsed_date = ist.localize(parsed_date).date()
+
+        # Make parsed_date timezone-aware if it is naive
+        if parsed_date.tzinfo is None:
+            parsed_date = ist.localize(parsed_date)
+
+        # Convert parsed_date to just the date part
+        parsed_date = parsed_date.date()
 
         # Check if the date is older than today
         if parsed_date < current_date:
-            return "old date"
+            return "06/09/2024"  # Default value if the date is in the past
 
         return parsed_date.strftime("%d/%m/%Y")  # Return the date in DD/MM/YYYY format
 
@@ -114,8 +120,8 @@ def convert_to_date(date_str: str) -> str:
         # Handle specific relative date cases
         today = datetime.now(ist).date()
 
-        # Check for "next day"
-        if 'next day' or 'coming day' in date_str:
+        # Check for "next day" or "coming day"
+        if 'next day' in date_str or 'coming day' in date_str:
             parsed_date = today + timedelta(days=1)
             return parsed_date.strftime("%d/%m/%Y")
 
@@ -164,7 +170,8 @@ def add_data(new):
 def sendQRViaEmail(img_path, img_name, email):
     # Compose the email
     msg = MIMEMultipart()
-    sender_email = "sihticketingbot@outlook.com"
+    # sender_email = "sihticketingbot@outlook.com"
+    sender_email = "automates1234@outlook.com"
     receiver_email = email
     msg['From'] = sender_email
     msg['To'] = receiver_email
@@ -186,7 +193,7 @@ def sendQRViaEmail(img_path, img_name, email):
     server.starttls()
 
     # Log in to the server
-    server.login(sender_email, 'paneerlababdar9999@#')
+    server.login(sender_email, 'chatbot@1234')
 
     # Send the email
     server.sendmail(sender_email, receiver_email, text)

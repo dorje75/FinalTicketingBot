@@ -1,18 +1,13 @@
-import csv
 import re
+from datetime import datetime
 from typing import Any, Text, Dict, List
 
-from humanfriendly.terminal import message
-from prompt_toolkit.shortcuts import button_dialog
+import qrcode
 from rasa_sdk import Action, Tracker
 from rasa_sdk import FormValidationAction
-from rasa_sdk.events import SlotSet, SessionStarted, ActionExecuted, EventType
+from rasa_sdk.events import SlotSet, SessionStarted, EventType
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
-
-from datetime import datetime
-import qrcode
-from werkzeug import run_simple
 
 from .custom_functions import extract_and_convert_ticket, convert_to_date, cidgen, add_data, sendQRViaEmail
 
@@ -45,12 +40,12 @@ class TicketPrice(Action): #return default ticket price
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        message = (
+        text = (
             f"Pricing Details:<br>"
             f"Indian Nationals: ₹{INDIAN_NATIONAL_PRICE}<br>"
             f"Foreigners: ₹{NON_INDIAN_NATIONAL_PRICE}<br>"
         )
-        dispatcher.utter_message(message)
+        dispatcher.utter_message(text)
 
         return []
 

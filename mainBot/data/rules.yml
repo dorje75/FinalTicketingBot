@@ -57,6 +57,10 @@ rules:
   steps:
     - intent: book_ticket
     - action: utter_ask_ticket_count
+- rule: ticket price
+  steps:
+    - intent: ticket_price
+    - action: action_return_price
 
 - rule: Introduce your self #to introduce herself
   steps:
