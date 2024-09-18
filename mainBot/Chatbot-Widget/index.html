@@ -666,23 +666,21 @@
             <!--############CHAT-BOT-WIDGET-->
             <div class="always-on-top">
                 <div class="container">
-                    <!-- Modal for rendering the charts, declare this if you want to render charts,
-         else you remove the modal -->
+                    <!-- Modal for rendering the charts -->
                     <div id="modal1" class="modal">
                         <canvas id="modal-chart"></canvas>
                     </div>
 
-                    <!--chatbot widget -->
+                    <!-- Chatbot widget -->
                     <div class="widget">
                         <div class="chat_header">
-                            <!--Add the name of the bot here -->
-                            <span class="chat_header_title">Darshan
-                            </span>
+                            <!-- Add the name of the bot here -->
+                            <span class="chat_header_title">Darshan</span>
                             <span class="dropdown-trigger" href="#" data-target="dropdown1">
                                 <i class="material-icons"> more_vert </i>
                             </span>
 
-                            <!-- Dropdown menu-->
+                            <!-- Dropdown menu -->
                             <ul id="dropdown1" class="dropdown-content">
                                 <li><a href="#" id="clear">Clear</a></li>
                                 <li><a href="#" id="restart">Restart</a></li>
@@ -690,12 +688,40 @@
                             </ul>
                         </div>
 
-                        <!--Chatbot contents goes here -->
+                        <!-- Chatbot contents go here -->
                         <div class="chats" id="chats">
                             <div class="clearfix"></div>
+
+                            <!-- Form Table for input inside chatbox -->
+                            <div class="form_table" id="formTable">
+                                <table class="table_inside">
+                                    <tr>
+                                        <td><label for="male_count">Male Count:</label></td>
+                                        <td><input type="number" id="male_count" name="male_count" value="0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="female_count">Female Count:</label></td>
+                                        <td><input type="number" id="female_count" name="female_count" value="0" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="children_count">Children Count:</label></td>
+                                        <td><input type="number" id="children_count" name="children_count" value="0" />
+                                        </td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td><label for="date">Date:</label></td>
+                                        <td><input type="date" id="date" name="date" /></td>
+                                    </tr> -->
+                                    <tr>
+                                        <td colspan="2">
+                                            <button type="button" onclick="submitForm()">Submit</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
 
-                        <!--keypad for user to type the message -->
+                        <!-- Keypad for user to type the message -->
                         <div class="keypad">
                             <textarea id="userInput" placeholder="Type a message..." class="usrInput"
                                 autofocus></textarea>
@@ -705,7 +731,7 @@
                         </div>
                     </div>
 
-                    <!--bot profile-->
+                    <!-- Bot profile -->
                     <div class="profile_div" id="profile_div">
                         <img class="imgProfile" src="static/img/botImage.png" />
                     </div>
@@ -722,6 +748,7 @@
                 </div>
             </div>
 
+
             <!--######################### HTML of chat box ends here#################################################-->
 
 
@@ -735,6 +762,17 @@
             <!--Chart.js Script -->
             <script type="text/javascript" src="static/js/lib/chart.min.js"></script>
             <script type="text/javascript" src="static/js/lib/showdown.min.js"></script>
+            <script>
+                document.querySelectorAll('input[type="number"]').forEach(input => {
+                    input.addEventListener('input', function () {
+                        if (parseInt(this.value) < 0) {
+                            this.value = 0;
+                        }
+                    });
+                });
+                // Function to show the form and overlay, and disable chat input
+                
+            </script>
 
 
 </html>
