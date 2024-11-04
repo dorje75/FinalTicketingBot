@@ -1030,3 +1030,105 @@ video:focus {
 
 /* Style for number input to start from zero */
 
+/* date pricker css >>>>>>>>*/
+#formTable_date {
+    display: none; /* Hide the form table initially */
+
+}
+.form_table_date {
+  display: none;
+  position: absolute;
+  /* Positioned within .chats container */
+  bottom: 10px;
+  left: 10px;
+  width: 250px;
+  height: 135px;
+  padding: 10px;
+  background: #ffffffbd;
+  border-radius: 10px;
+  box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.16), 0 0px 5px 0 #00000096;
+  font-family: "Montserrat", sans-serif;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+
+
+/* Style for table inside the form */
+.form_table_date table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px; /* Rounded corners for the table */
+  overflow: hidden; /* Ensure corners are rounded */
+}
+
+.form_table_date td {
+  padding: 5px;
+  align-items: center;
+  justify-content: center; /* Center content horizontally */
+  /* Space around table cells */
+}
+
+.form_table_date label {
+  font-size: 12px;
+  /* Smaller font size for labels */
+  color: #27374D;
+  /* Match the chat header color */
+}
+
+.form_table_date input[type="date"] {
+  width: 100%;
+  /* Full width of the cell */
+  padding: 5px;
+  /* Padding inside input fields */
+  font-size: 16px;
+  /* Smaller font size for inputs */
+  border: 1px solid #ccc;
+  /* Border color */
+  border-radius: 5px;
+  /* Rounded corners */
+  box-sizing: border-box;
+  /* Include padding in width */
+}
+
+.form_table_date button {
+  width: 100%;
+  /* Full width of the cell */
+  padding: 10px;
+  font-size: 12px;
+  /* Smaller font size for button */
+  color: white;
+  /* Button text color */
+  background: #27374D;
+  /* Match the chat header color */
+  border: none;
+  /* Remove default border */
+  border-radius: 5px;
+  /* Rounded corners */
+  cursor: pointer;
+  /* Pointer cursor on hover */
+  transition: background 0.3s;
+  /* Smooth background color transition */
+}
+
+.form_table_date button:hover {
+  background: #1c2a38;
+  /* Darker shade on hover */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent overlay */
+  z-index: 5;
+  /* Place overlay above chat but below the form */
+  display: none;
+  /* Initially hidden */
+}
+

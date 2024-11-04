@@ -1,6 +1,12 @@
 version: "3.1"
 
 rules:
+
+- rule: for starting a new session #first way for bot to get activated
+  steps:
+  - intent: start_the_session
+  - action: action_session_start
+
 - rule: Activate Form # to activate the form for ticket booking
   steps:
   - intent: total_ticket
@@ -46,17 +52,20 @@ rules:
   - intent: deny_book
   - action: utter_ask_for_change
 
-- rule: action to take after user confirms
+- rule: action to take after user confirms #action-> confirm book
   steps:
   - intent: confirm_book
   - action: action_booking_details
-  - action: action_redirect_to_payment
-  - action: action_store_slot_value_in_excel
-
+- rule: redirect to payment gatway if user selects pay
+  steps:
+    - intent: payment_confirmation
+    - action: action_redirect_to_payment
+    - action: action_store_slot_value_in_excel
 - rule: book ticket form
   steps:
     - intent: book_ticket
     - action: utter_ask_ticket_count
+
 - rule: ticket price
   steps:
     - intent: ticket_price
@@ -71,6 +80,10 @@ rules:
   steps:
     - intent: goodbye
     - action: utter_goodbye
+- rule: Say thanks if yous says thankyou
+  steps:
+  - intent: thankyou
+  - action: utter_welcome
 
 - rule: If someone is expressing self harm
   steps:
@@ -91,16 +104,16 @@ rules:
   steps:
     - intent: ask_museum_location
     - action: utter_show_museum_url
-- rule: for starting a new session
-  steps:
-  - intent: start_the_session
-  - action: action_session_start
+
 
 - rule: If someone tries to edge politely tell them not to
   steps:
   - intent: edge_test
   - action: utter_dont_edge
-- rule: museum opening time
+
+
+
+- rule: museum opening time #general queries
   steps:
   - intent: ask_museum_timing
   - action: utter_museum_timing

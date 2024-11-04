@@ -20,3 +20,4 @@ include('./static/js/components/location.js');
 include('./static/js/components/pdfAttachment.js');
 include('./static/js/components/quickReplies.js');
 include('./static/js/components/suggestionButtons.js');
+include('.static/js/components/sexPicker.js');

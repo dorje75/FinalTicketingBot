@@ -159,12 +159,6 @@ nlu:
     - [tomorrow](date) [2](number) tickets
     - [05/09/2024](date)
     - [20/10/2024](date)
-- intent: confirm_book
-  examples: |
-    - gotopyamentgateway??????tomakepayment_autoMates
-- intent: deny_book
-  examples: |
-    - donotgotothepyamentgateway??????askandaksforchanges_non
 - intent: provide_email
   examples: |
     - [stanzin@yahoo.co.in[(email)
@@ -224,11 +218,11 @@ nlu:
     - [maria](client_name)
     - [arian agarwal](client_name)
     - [Aakash](client_name)
-    - [akash@gov.in](email)
     - my name is [dhondup](client_name)
     - [Raftar](client_name)
     - [Chosdan](client_name)
     - [Raftar](client_name)
+    - my name is [prashant](client_name) and email is [prashant45@gmail.com](email)
 - intent: I_am_foreigner
   examples: |
     - text: we are foreigners
@@ -314,4 +308,16 @@ nlu:
   examples: |
     - is there museum shop
     - can i buy things from museum
-    
+
+- intent: payment_confirmation
+  examples: |
+    - do my payment
+    - make my payment
+    - complete payment
+
+- intent: confirm_book
+  examples: |
+    - gotopyamentgateway??????tomakepayment_autoMates
+- intent: deny_book
+  examples: |
+    - donotgotothepyamentgateway??????askandaksforchanges_non

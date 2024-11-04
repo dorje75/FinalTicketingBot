@@ -22,6 +22,7 @@ intents:
 - ask_museum_timing
 - is_filming_allowed
 - is_there_museum_shop
+- payment_confirmation
 
 entities:
 - date
@@ -44,7 +45,7 @@ actions:
 - action_max_ticket_allowed
 - action_return_price
 - validate_ticket_booking_form
-- utter_thankyou
+- utter_welcome
 - utter_goodbye
 - action_validate_number
 - action_contact_self_help
@@ -67,9 +68,9 @@ responses:
   - text: Take care, goodbye
   - text: See you next time
   - text: Please make sure to visit us again
-  utter_thankyou:
-  - text: Thank you
-  - text: Thanks
+  utter_welcome:
+  - text: You're welcome! Always here to help you out.
+  - text: You're welcome. If you need anything else, feel free to ask.
   utter_ask_ticket_count:
   - text: How many tickets would you like
   - text: How many tickets do you need?

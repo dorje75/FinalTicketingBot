@@ -1,6 +1,7 @@
 /**
  * scroll to the bottom of the chats after new message has been added to chat
  */
+
 const converter = new showdown.Converter();
 function scrollToBottomOfResults() {
   const terminalResultsDiv = document.getElementById("chats");
@@ -99,10 +100,11 @@ function setBotResponse(response) {
             $(botResponse).appendTo(".chats").hide().fadeIn(1000);
           }
         }
-
+        //check is asking for date
         // check if the response contains "images"
         if (Object.hasOwnProperty.call(response[i], "image")) {
           if (response[i].image !== null) {
+
             const BotResponse = `<div class="singleCard"><img class="imgcard" src="${response[i].image}"></div><div class="clearfix">`;
 
             $(BotResponse).appendTo(".chats").hide().fadeIn(1000);

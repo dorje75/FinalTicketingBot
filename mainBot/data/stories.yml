@@ -34,6 +34,7 @@ stories:
     - action: utter_take_total_confirmation_indian
     - intent: confirm_book
     - action: action_booking_details
+    - intent: payment_confirmation
     - action: action_redirect_to_payment
     - action: action_store_slot_value_in_excel
 
@@ -82,6 +83,7 @@ stories:
     - action: utter_take_total_confirmation_foreigner
     - intent: confirm_book
     - action: action_booking_details
+    - intent: payment_confirmation
     - action: action_redirect_to_payment
     - action: action_store_slot_value_in_excel
 

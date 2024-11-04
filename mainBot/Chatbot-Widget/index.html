@@ -691,6 +691,20 @@
                         <!-- Chatbot contents go here -->
                         <div class="chats" id="chats">
                             <div class="clearfix"></div>
+                            <!-- Form Table for date input-->
+                            <div class="form_table_date" id="formTable_date">
+                                <table>
+                                    <tr>
+                                        <td><label for="date">Date:</label></td>
+                                        <td><input type="date" id="date" name="date" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button type="button" onclick="submitForm()">Submit</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
 
                             <!-- Form Table for input inside chatbox -->
                             <div class="form_table" id="formTable">
@@ -762,6 +776,7 @@
             <!--Chart.js Script -->
             <script type="text/javascript" src="static/js/lib/chart.min.js"></script>
             <script type="text/javascript" src="static/js/lib/showdown.min.js"></script>
+            <!--doesnt allow the sex picker go below zero-->
             <script>
                 document.querySelectorAll('input[type="number"]').forEach(input => {
                     input.addEventListener('input', function () {
@@ -773,6 +788,7 @@
                 // Function to show the form and overlay, and disable chat input
                 
             </script>
+
 
 
 </html>

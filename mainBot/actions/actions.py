@@ -40,12 +40,17 @@ class TicketPrice(Action): #return default ticket price
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        text = (
-            f"Pricing Details:<br>"
-            f"Indian Nationals: ₹{INDIAN_NATIONAL_PRICE}<br>"
-            f"Foreigners: ₹{NON_INDIAN_NATIONAL_PRICE}<br>"
+        dispatcher.utter_message(
+            text=(
+                f"Pricing Details:<br>"
+                f"Indian Nationals: ₹{INDIAN_NATIONAL_PRICE}<br>"
+                f"Foreigners: ₹{NON_INDIAN_NATIONAL_PRICE}"
+
+            ),
+            buttons = [
+                {"title": "Buy Ticket", "payload": "/book_ticket"},
+            ],
         )
-        dispatcher.utter_message(text)
 
         return []
 
@@ -140,7 +145,7 @@ class ValidateTicketBookingForm(FormValidationAction): # to validate the form
             return {"email": slot_value}
         else:
             dispatcher.utter_message(
-                text="Sorry, could you please repeat your email?"
+                text="Invalid email"
             )
         return {"email": None}
 
@@ -153,17 +158,21 @@ class BookingDetails(Action):
         # Extract and handle ticket count
         ticket_count_slot = tracker.get_slot("ticket_count")
         try:
-            ticket_count = extract_and_convert_ticket(str(ticket_count_slot))
+            #ticket_count = extract_and_convert_ticket(str(ticket_count_slot))
+            ticket_count = ticket_count_slot
+
         except (ValueError, TypeError) as e:
-            dispatcher.utter_message(text="Sorry, I didn’t catch that. Can you provide a number?")
+            dispatcher.utter_message(text="Sorry, having problem with ticket count")
             return []
 
         # Extract and handle date
         date_slot = tracker.get_slot("date")
         try:
-            date = convert_to_date(date_slot)
+            date = date_slot
+#           #date = convert_to_date(date_slot)
+
         except (ValueError, TypeError) as e:
-            dispatcher.utter_message(text="Looks like the date is invalid. Can you give it in DD/MM/YYYY format?")
+            dispatcher.utter_message(text="Sorry, having problem with date")
             return []
 
         # Extract and handle foreigner count
@@ -171,43 +180,61 @@ class BookingDetails(Action):
         if foreigner_count_slot is None:
             foreigner_count_slot=0
         try:
-            foreigner_count = extract_and_convert_ticket(str(foreigner_count_slot))
+            foreigner_count = foreigner_count_slot
+            #foreigner_count = extract_and_convert_ticket(str(foreigner_count_slot))
+
         except (ValueError, TypeError) as e:
 
-            dispatcher.utter_message(text="Sorry, I didn’t catch that.")
+            dispatcher.utter_message(text="Sorry, having problem with foreigner count")
             return []
 
-        # Calculate local count and total price
+        # Calculate local count
         try:
             local_count = int(ticket_count) - int(foreigner_count)
-            total_price = (local_count * INDIAN_NATIONAL_PRICE) + (foreigner_count * NON_INDIAN_NATIONAL_PRICE)
         except (ValueError, TypeError) as e:
-            dispatcher.utter_message(text="There was an error!")
+            dispatcher.utter_message(text="Sorry, having problem with indian count")
             return []
         try:
             client_name_slot=tracker.get_slot("client_name")
             formated_client_name=client_name_slot.strip().upper()
         except (ValueError,TypeError) as e:
-            dispatcher.utter_message(text="Sorry, can you repeat your name")
+            dispatcher.utter_message(text="Sorry, having problem with name")
             return []
         try:
             email_slot=tracker.get_slot("email")
             formatted_email=email_slot.strip().lower()
         except(ValueError,TypeError) as e:
-            dispatcher.utter_message(text="Sorry, couldn't fetch it")
+            dispatcher.utter_message(text="Sorry, having problem with email")
+            return []
+        try:
+            indian_price = (local_count * INDIAN_NATIONAL_PRICE)
+            foreigner_price = (foreigner_count * NON_INDIAN_NATIONAL_PRICE)
+            total_price = indian_price + foreigner_price
+        except(ValueError,TypeError) as e:
+            dispatcher.utter_message(text="Sorry, having problem with price calculation")
             return []
 
         # Format and send the message
-        message = (f"Booking Details:<br>\n"
-                   f"Name: {formated_client_name}<br>\n"
-                   f"Email: {formatted_email}<br>\n"
-                   f"Date: {date}<br>\n"
-                   f"Indians: {local_count}<br>\n"
-                   f"Foreigners: {foreigner_count}<br>"
-                   f"Total Ticket: {ticket_count}<br>\n "
-                   f"Total Price: ₹{total_price}<br>\n"
-                  )
-        dispatcher.utter_message(message)
+
+        dispatcher.utter_message(
+            text = ( f"Booking Details:<br>\n"
+                        f"Name: {formated_client_name}<br>\n"
+                        f"Email: {formatted_email}<br>\n"
+                        f"Date of Visit: {date}<br>\n"
+                        f"Indians: {local_count}<br>\n"
+                        f"Indian Price: {indian_price}<br>"
+                        f"Foreigners: {foreigner_count}<br>"
+                        f"Foreigner Price: {foreigner_price}<br>"
+                        f"Total Ticket: {ticket_count}<br>\n "
+                        f"Total Price: ₹{total_price}<br>\n"
+            ),
+            buttons=
+            [
+                {"title": "Pay", "payload": "/payment_confirmation"},
+                {"title": "Cancel", "payload": "/utter_ask_for_change"},
+            ]
+        )
+
         return []
 
 #>>>>Action redirected to payment gateway(function to go to payment gateway)
