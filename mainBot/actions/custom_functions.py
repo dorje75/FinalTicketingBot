@@ -6,12 +6,12 @@ import pytz
 from datetime import datetime, timedelta
 import uuid
 import mysql.connector
+
 import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
-
 #rasa run -m models --enable-api --cors "*" --debug
 
 
@@ -152,54 +152,120 @@ def convert_to_date(date_str: str) -> str:
 def cidgen():
     return str(uuid.uuid4())
 
+import mysql.connector
+
 def add_data(new):
+    # Unpack the values
+    f_date, customer_id, client_name, ticket_count, indian_count, foreigner_count, email = new
+
+    # Connect to DB
     mydb = mysql.connector.connect(
-    host = "localhost",
-    user = "root",
-    password = "qwerty1234@#",
-    database = "Users"
+        host="localhost",
+        user="root",
+        password="dhondup123",
+        database="Users"
     )
     cursor = mydb.cursor()
-    insert_query = "INSERT INTO users (booking_date, customer_id, customer_name, total_tickets, indian_bookings, foreign_bookings,customer_email) VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
-    cursor.execute(insert_query, new)
+    # 1. Insert or update customer
+    insert_customer = """
+        INSERT INTO customers (customer_id, customer_name, customer_email)
+        VALUES (%s, %s, %s)
+        ON DUPLICATE KEY UPDATE
+        customer_name = VALUES(customer_name),
+        customer_email = VALUES(customer_email)
+    """
+    cursor.execute(insert_customer, (customer_id, client_name, email))
 
+    # 2. Insert booking
+    insert_booking = """
+        INSERT INTO bookings (booking_date, customer_id, total_tickets)
+        VALUES (%s, %s, %s)
+    """
+    cursor.execute(insert_booking, (f_date, customer_id, ticket_count))
+    booking_id = cursor.lastrowid  # auto-incremented booking ID
+
+    # 3. Insert booking details (only if count > 0)
+    insert_detail = """
+        INSERT INTO booking_details (booking_id, ticket_type, count)
+        VALUES (%s, %s, %s)
+    """
+    if indian_count > 0:
+        cursor.execute(insert_detail, (booking_id, 'indian', indian_count))
+    if foreigner_count > 0:
+        cursor.execute(insert_detail, (booking_id, 'foreign', foreigner_count))
+
+    # Finalize
     mydb.commit()
     mydb.close()
 
+
+# def sendQRViaEmail(img_path, img_name, email):
+#     # Compose the email
+#     msg = MIMEMultipart()
+#     # sender_email = "sihticketingbot@outlook.com"
+#     sender_email = "darshan9989@outlook.com"
+#     receiver_email = email
+#     msg['From'] = sender_email
+#     msg['To'] = receiver_email
+#     msg['Subject'] = 'Your QR Code for the Ticket Booking'
+#     body = 'Please find your QR code attached to this email.'
+#     msg.attach(MIMEText(body, 'plain'))
+#
+#     # Attach the QR code image
+#     with open(img_path, 'rb') as attachment:
+#         part = MIMEApplication(attachment.read(), Name=os.path.basename(img_path))
+#         part['Content-Disposition'] = f'attachment; filename="{img_name}"'
+#         msg.attach(part)
+#
+#     # Convert the message to string format
+#     text = msg.as_string()
+#
+#     # Set up the email server (Outlook SMTP)
+#     server = smtplib.SMTP('smtp.office365.com', 587)
+#     server.starttls()
+#
+#     # Log in to the server
+#     server.login(sender_email, 'projectpoorakaro1234')
+#
+#     # Send the email
+#     server.sendmail(sender_email, receiver_email, text)
+#
+#     # Quit the server
+#     server.quit()
+#
+#     # Optionally, remove the QR code file after sending the email
+#     os.remove(img_path)
+
+
+import os
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
+
 def sendQRViaEmail(img_path, img_name, email):
-    # Compose the email
     msg = MIMEMultipart()
-    # sender_email = "sihticketingbot@outlook.com"
-    sender_email = "automates1234@outlook.com"
+    sender_email = "dorje1003@gmail.com"  # This must be validated in Brevo
     receiver_email = email
     msg['From'] = sender_email
     msg['To'] = receiver_email
-    msg['Subject'] = 'Your QR Code for the Ticket Booking'
+    msg['Subject'] = 'Your ticket has been confirmed! Please scan the attached QR code when you arrive at the museum.'
     body = 'Please find your QR code attached to this email.'
     msg.attach(MIMEText(body, 'plain'))
 
-    # Attach the QR code image
     with open(img_path, 'rb') as attachment:
         part = MIMEApplication(attachment.read(), Name=os.path.basename(img_path))
         part['Content-Disposition'] = f'attachment; filename="{img_name}"'
         msg.attach(part)
 
-    # Convert the message to string format
     text = msg.as_string()
 
-    # Set up the email server (Outlook SMTP)
-    server = smtplib.SMTP('smtp.office365.com', 587)
+    server = smtplib.SMTP('smtp-relay.brevo.com', 587)
     server.starttls()
-
-    # Log in to the server
-    server.login(sender_email, 'chatbot@1234')
-
-    # Send the email
+    server.login("8a146d001@smtp-brevo.com", "q7RSzYpOZh8Gbrv1")
     server.sendmail(sender_email, receiver_email, text)
-
-    # Quit the server
     server.quit()
 
-    # Optionally, remove the QR code file after sending the email
     os.remove(img_path)
+
