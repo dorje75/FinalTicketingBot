@@ -1,68 +1,138 @@
+```markdown
+# 🚀 Setup and Usage Instructions
 
+## 📦 Installation Guide
 
----
+### 1. Prerequisites
 
-# Setup and Usage Instructions
+- ✅ **Python 3.10.11** is required  
+  (Rasa only works with Python <= 3.10)
 
-## Installation Guide
-
-### Prerequisites
-1. **Download PyCharm** and open it.
-
-2. **In the PyCharm Projects Directory:**
-   - Download or paste this directory: `SihTicketingBot`.
-
-3. **Install Dependencies:**
-   - **RASA:** `pip install rasa`  
-     (Rasa only works on python version <= 3.10.xx)
-     (You can directly download python version 3.10.xx from pycharm itself)
-   - **Python 3.10.11**
-
-4. **Python Libraries:**
-   ```plaintext
-   datetime: pip install datetime
-   dateparser: pip install dateparser
-   word2number: pip install word2number
-   rapidfuzz: pip install rapidfuzz
-   pytz: pip install pytz
-   fuzzywuzzy: pip install fuzzywuzzy
-   pyspellchecker: pip install pyspellchecker
-   ```
-
-## Training and Running the Model
-
-1. **Change Your Terminal:**
-   - Switch your terminal from PowerShell to CMD if you encounter difficulties. You should see something like this:
-     ```plaintext
-     (.venv) C:\Users\{user_name}\PycharmProjects\SihTicketingBot>
-     ```
-
-2. **Start the Action Server:**
-   ```plaintext
-   (.venv) C:\Users\{user_name}\PycharmProjects\SihTicketingBot> cd mainBot
-   (.venv) C:\Users\{user_name}\PycharmProjects\SihTicketingBot\mainBot> rasa run actions
-   ```
-   - You should see: `2024-08-27 17:55:10 INFO     rasa_sdk.endpoint  - Action endpoint is up and running on http://0.0.0.0:5055`
-
-3. **Train the Model:**
-   - Open a new terminal without closing the previous one.
-   ```plaintext
-   (.venv) C:\Users\{user_name}\PycharmProjects\SihTicketingBot> cd mainBot
-   (.venv) C:\Users\{user_name}\PycharmProjects\SihTicketingBot\mainBot> rasa train
-   ```
-
-4. **Run the Model:**
-   ```plaintext
-   rasa shell
-   ```
-   - This will allow you to interact with the model and see it in action.
-
-5. **Interactive Mode (Optional):**
-   ```plaintext
-   rasa interactive
-   ```
-   - Use this to see each step of the bot, guide it if it makes mistakes, and it will remember your corrections(**!!!If you safe it!!!**).
+- 💻 **Download or clone** the project directory:  
+  `SihTicketingBot`
 
 ---
 
-Feel free to adjust any specifics or additional instructions as needed!
+### 2. Install Python 3.10.11
+
+If you don't already have Python 3.10.11:
+
+- Download it from:  
+  [https://www.python.org/downloads/release/python-31011/](https://www.python.org/downloads/release/python-31011/)
+
+- ✅ On Windows: **Make sure to check "Add Python to PATH"** during installation.
+
+---
+
+### 3. Create a Virtual Environment with Python 3.10.11
+
+#### ➤ Option A (If `python3.10` is available in your terminal):
+
+```bash
+python3.10 -m venv .venv
+```
+
+#### ➤ Option B (Use full path to Python 3.10.11):
+
+- **Windows:**
+  ```bash
+  "C:\Users\YourName\AppData\Local\Programs\Python\Python310\python.exe" -m venv .venv
+  ```
+
+- **Mac/Linux:**
+  ```bash
+  /usr/local/bin/python3.10 -m venv .venv
+  ```
+
+#### ➤ Activate the environment:
+
+- **Windows:**
+  ```bash
+  .venv\Scripts\activate
+  ```
+
+- **Mac/Linux:**
+  ```bash
+  source .venv/bin/activate
+  ```
+
+#### ✅ Confirm Python Version:
+
+```bash
+python --version
+```
+
+Output should be:
+
+```plaintext
+Python 3.10.11
+```
+
+---
+
+### 4. Install Dependencies
+
+Run the following command:
+
+```bash
+pip install -r requirements.txt
+```
+
+This installs all required libraries including:
+- rasa
+- datetime
+- dateparser
+- word2number
+- rapidfuzz
+- pytz
+- fuzzywuzzy
+- pyspellchecker  
+...and more.
+
+---
+
+## 🤖 Running the Bot
+
+### 5. Start the Action Server
+
+In the same terminal:
+
+```bash
+cd mainBot
+rasa run actions
+```
+
+You should see:
+
+```plaintext
+Action endpoint is up and running on http://0.0.0.0:5055
+```
+
+---
+
+### 6. Start the Rasa Server
+
+Open a **new terminal**, activate the environment again, then run:
+
+```bash
+cd SihTicketingBot/mainBot
+rasa run -m models --enable-api --cors "*" --debug
+```
+
+This runs the Rasa backend with API and frontend support.
+
+---
+
+### 7. Run the Chatbot Frontend
+
+1. Go to the `Chatbot-Widget` folder:
+   ```bash
+   cd ../../Chatbot-Widget
+   ```
+
+2. Open `index.html` in a browser by double-clicking it or right-click → **Open with browser**.
+
+---
+
+🎉 All set! Your chatbot is now live and ready to chat.
+```
